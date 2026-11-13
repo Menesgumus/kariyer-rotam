@@ -1,7 +1,8 @@
-import type { Application } from '../types';
+import { APPLICATION_STATUSES, type Application, type ApplicationStatus } from '../types';
 
 interface ApplicationCardProps {
   application: Application;
+  onStatusChange: (id: string, status: ApplicationStatus) => void;
 }
 
 function formatDate(dateString: string): string {
@@ -20,7 +21,8 @@ function normalizeUrl(url: string): string {
   return `https://${url}`;
 }
 
-export function ApplicationCard({ application }: ApplicationCardProps) {
+export function ApplicationCard({ application, onStatusChange }: ApplicationCardProps) {
+  const selectId = `status-${application.id}`;
   return (
     <article className="application-card">
       <div className="card-header">
@@ -55,6 +57,24 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
       </dl>
 
       {application.note && <p className="card-note">{application.note}</p>}
+
+      <div className="card-status-control">
+        <label htmlFor={selectId}>Başvuru Durumu:</label>
+        <select
+          id={selectId}
+          className="status-select"
+          value={application.status}
+          onChange={(e) =>
+            onStatusChange(application.id, e.target.value as ApplicationStatus)
+          }
+        >
+          {APPLICATION_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+      </div>
     </article>
   );
 }

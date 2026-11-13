@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ApplicationCard } from './components/ApplicationCard';
 import { ApplicationForm } from './components/ApplicationForm';
 import { loadApplications, saveApplications } from './storage';
-import type { Application, NewApplicationInput } from './types';
+import type { Application, ApplicationStatus, NewApplicationInput } from './types';
 import './App.css';
 
 function createId(): string {
@@ -33,6 +33,14 @@ function App() {
     setApplications((prev) => [newApplication, ...prev]);
   }
 
+  function handleStatusChange(id: string, status: ApplicationStatus) {
+    setApplications((prev) =>
+      prev.map((application) =>
+        application.id === id ? { ...application, status } : application,
+      ),
+    );
+  }
+
   return (
     <div className="page-container">
       <header className="page-header">
@@ -58,6 +66,7 @@ function App() {
                 <ApplicationCard
                   key={application.id}
                   application={application}
+                  onStatusChange={handleStatusChange}
                 />
               ))}
             </div>
