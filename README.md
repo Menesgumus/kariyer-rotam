@@ -17,7 +17,7 @@
 
 ## GitHub Projects Panosu
 
-> **Not (Teslim Öncesi Tamamlanacak):** GitHub deposu (`kariyer-rotam`) ve GitHub Projects panosu henüz oluşturulmadığı için pano bağlantısı burada yer almamaktadır. Teslim öncesinde GitHub Projects panosu oluşturulup bağlantısı bu bölüme eklenmelidir.
+- Proje panosu: https://github.com/users/Menesgumus/projects/4
 
 ## Kurulum ve Çalıştırma
 
