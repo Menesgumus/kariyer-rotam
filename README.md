@@ -21,9 +21,11 @@
 
 ## Kurulum ve Çalıştırma
 
-- **Gerekli Node.js sürümü:** Node.js 20+ (bu proje `v24.13.1` ve `npm 11.6.1` ile doğrulandı).
+- **Gerekli Node.js sürümü:** Node.js `20.19+` veya `22.12+` (Vite 8 gereksinimi; `v24.13.1` ve `npm 11.6.1` ile doğrulandı).
 
 ```bash
+git clone https://github.com/Menesgumus/kariyer-rotam.git
+cd kariyer-rotam
 npm install
 npm run dev
 ```

@@ -1,3 +1,4 @@
+import { normalizeHttpUrl } from '../storage';
 import { APPLICATION_STATUSES, type Application, type ApplicationStatus } from '../types';
 
 interface ApplicationCardProps {
@@ -14,15 +15,9 @@ function formatDate(dateString: string): string {
   return `${day}.${month}.${year}`;
 }
 
-function normalizeUrl(url: string): string {
-  if (/^https?:\/\//i.test(url)) {
-    return url;
-  }
-  return `https://${url}`;
-}
-
 export function ApplicationCard({ application, onStatusChange }: ApplicationCardProps) {
   const selectId = `status-${application.id}`;
+  const safeJobUrl = application.jobUrl ? normalizeHttpUrl(application.jobUrl) : null;
   return (
     <article className="application-card">
       <div className="card-header">
@@ -39,12 +34,12 @@ export function ApplicationCard({ application, onStatusChange }: ApplicationCard
           <dd>{formatDate(application.appliedDate)}</dd>
         </div>
 
-        {application.jobUrl && (
+        {safeJobUrl && (
           <div className="detail-row">
             <dt>İlan Bağlantısı:</dt>
             <dd>
               <a
-                href={normalizeUrl(application.jobUrl)}
+                href={safeJobUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="card-link"

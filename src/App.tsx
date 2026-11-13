@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ApplicationCard } from './components/ApplicationCard';
 import { ApplicationForm } from './components/ApplicationForm';
 import { loadApplications, saveApplications } from './storage';
@@ -14,10 +14,7 @@ function createId(): string {
 
 function App() {
   const [applications, setApplications] = useState<Application[]>(loadApplications);
-
-  useEffect(() => {
-    saveApplications(applications);
-  }, [applications]);
+  const [storageError, setStorageError] = useState(false);
 
   function handleAddApplication(input: NewApplicationInput) {
     const newApplication: Application = {
@@ -30,15 +27,17 @@ function App() {
       status: 'Başvuruldu',
     };
 
-    setApplications((prev) => [newApplication, ...prev]);
+    const nextApplications = [newApplication, ...applications];
+    setApplications(nextApplications);
+    setStorageError(!saveApplications(nextApplications));
   }
 
   function handleStatusChange(id: string, status: ApplicationStatus) {
-    setApplications((prev) =>
-      prev.map((application) =>
-        application.id === id ? { ...application, status } : application,
-      ),
+    const nextApplications = applications.map((application) =>
+      application.id === id ? { ...application, status } : application,
     );
+    setApplications(nextApplications);
+    setStorageError(!saveApplications(nextApplications));
   }
 
   return (
@@ -51,6 +50,12 @@ function App() {
       </header>
 
       <main className="main-content">
+        {storageError && (
+          <p className="form-error" role="alert">
+            Veriler tarayıcıya kaydedilemedi. Tarayıcı depolama alanı dolu veya kapalı olabilir.
+          </p>
+        )}
+
         <ApplicationForm onAdd={handleAddApplication} />
 
         <section className="list-section" aria-labelledby="list-heading">

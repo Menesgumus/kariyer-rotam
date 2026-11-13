@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { getTodayDateString } from '../storage';
+import { getTodayDateString, normalizeHttpUrl } from '../storage';
 import type { NewApplicationInput } from '../types';
 
 interface ApplicationFormProps {
@@ -31,13 +31,23 @@ export function ApplicationForm({ onAdd }: ApplicationFormProps) {
     }
 
     const trimmedUrl = jobUrl.trim();
+    let normalizedUrl: string | undefined;
+    if (trimmedUrl) {
+      const safeUrl = normalizeHttpUrl(trimmedUrl);
+      if (!safeUrl) {
+        setError('Lütfen geçerli bir http veya https ilan bağlantısı girin.');
+        return;
+      }
+      normalizedUrl = safeUrl;
+    }
+
     const trimmedNote = note.trim();
 
     onAdd({
       company: trimmedCompany,
       position: trimmedPosition,
       appliedDate: trimmedDate,
-      jobUrl: trimmedUrl || undefined,
+      jobUrl: normalizedUrl,
       note: trimmedNote || undefined,
     });
 
